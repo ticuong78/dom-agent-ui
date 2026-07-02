@@ -1,11 +1,14 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "~/lib/supabase/supabase.types";
-import { getVisitorById } from "./visitor.queries";
+import { getVisitorById, getVisitSessionById } from "./visitor.queries";
 import {
   createVisitor,
   createVisitSession,
   updateVisitorTotalSessions,
 } from "./visitor.mutations";
+
+const VISITOR_ID_KEY = "visitor_id";
+const VISIT_SESSION_ID_KEY = "visit_session_id";
 
 export async function trackVisitSession(
   supabase: SupabaseClient<Database>,
@@ -13,7 +16,7 @@ export async function trackVisitSession(
     landingPage: string;
   },
 ) {
-  let visitorId = localStorage.getItem("visitor_id");
+  let visitorId = localStorage.getItem(VISITOR_ID_KEY);
   let visitor = null;
 
   if (visitorId) {
@@ -21,27 +24,40 @@ export async function trackVisitSession(
   }
 
   if (!visitor || !visitorId) {
+    localStorage.removeItem(VISITOR_ID_KEY);
+    sessionStorage.removeItem(VISIT_SESSION_ID_KEY);
+
     visitor = await createVisitor(supabase);
     visitorId = visitor.id;
-    localStorage.setItem("visitor_id", visitorId);
+
+    localStorage.setItem(VISITOR_ID_KEY, visitorId);
   }
 
-  const existingSessionId = sessionStorage.getItem("visit_session_id");
+  const existingSessionId = sessionStorage.getItem(VISIT_SESSION_ID_KEY);
 
   if (existingSessionId) {
-    return {
-      visitor,
+    const existingSession = await getVisitSessionById(supabase, {
       sessionId: existingSessionId,
-      createdNewSession: false,
-    };
+      visitorId,
+    });
+
+    if (existingSession) {
+      return {
+        visitor,
+        session: existingSession,
+        createdNewSession: false,
+      };
+    }
+
+    sessionStorage.removeItem(VISIT_SESSION_ID_KEY);
   }
 
-  const session = await createVisitSession(supabase, {
+  const newSession = await createVisitSession(supabase, {
     visitorId,
     landingPage: params.landingPage,
   });
 
-  sessionStorage.setItem("visit_session_id", session.id);
+  sessionStorage.setItem(VISIT_SESSION_ID_KEY, newSession.id);
 
   const totalSessions = (visitor.total_sessions ?? 0) + 1;
 
@@ -52,7 +68,7 @@ export async function trackVisitSession(
 
   return {
     visitor: updatedVisitor,
-    session,
+    session: newSession,
     createdNewSession: true,
   };
 }
