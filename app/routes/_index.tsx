@@ -10,7 +10,10 @@ import { Footer } from "../components/Footer";
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "tracui · Pure algorithmic DOM diff" },
-    { name: "description", content: "Catch DOM changes that matter, ignore the noise." },
+    {
+      name: "description",
+      content: "Catch DOM changes that matter, ignore the noise.",
+    },
   ];
 }
 
@@ -18,7 +21,7 @@ export default function Home() {
   return (
     <div className="relative min-h-screen flex flex-col selection:bg-brand-500/30 selection:text-brand-900 font-sans bg-[#fafafa] text-[#334155]">
       <Navbar />
-      
+
       <main className="grow pt-24 pb-0 relative overflow-hidden">
         {/* Background effects */}
         <div className="absolute inset-0 z-0 pointer-events-none bg-dots opacity-60"></div>

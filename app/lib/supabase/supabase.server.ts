@@ -3,11 +3,12 @@ import {
   parseCookieHeader,
   serializeCookieHeader,
 } from "@supabase/ssr";
+import type { Database } from "./supabase.types";
 
-export function createClient(request: Request) {
+export function createSupabaseServerClient(request: Request) {
   const headers = new Headers();
 
-  const supabase = createServerClient(
+  const supabase = createServerClient<Database>(
     process.env.VITE_SUPABASE_URL!,
     process.env.VITE_SUPABASE_PUBLISHABLE_KEY!,
     {
@@ -19,12 +20,12 @@ export function createClient(request: Request) {
           }[];
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
+          cookiesToSet.forEach(({ name, value, options }) => {
             headers.append(
               "Set-Cookie",
               serializeCookieHeader(name, value, options),
-            ),
-          );
+            );
+          });
         },
       },
     },

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getDiffReport } from "~/utils/dagent.setup";
+import { getDiffReport } from "~/lib/dagent/dagent.setup";
 import { DiffReport } from "./diff-report";
 import type { DiffReportProps } from "./diff-report/DiffReport";
 import { createDiffSummary } from "~/utils/diff";

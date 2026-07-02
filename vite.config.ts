@@ -3,7 +3,6 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  envDir: false,
   plugins: [tailwindcss(), reactRouter()],
   resolve: {
     tsconfigPaths: true,

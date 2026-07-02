@@ -1,0 +1,36 @@
+features = thư mục gom code theo chức năng/nghiệp vụ.
+
+lib = thư mục chứa code tích hợp thư viện/kỹ thuật nền, không thuộc riêng một nghiệp vụ nào.
+
+Phân biệt ngắn
+features = code theo nghiệp vụ
+lib      = code cấu hình / adapter / client cho thư viện bên ngoài
+utils    = helper nhỏ, generic
+types    = type dùng chung
+routes   = route/page/loader/action
+
+Ví dụ:
+
+students  → feature
+orders    → feature
+payments  → feature
+auth      → feature
+
+supabase client setup → lib
+zod setup chung       → lib nếu có wrapper chung
+date-fns adapter      → lib nếu có cấu hình
+query client setup    → lib
+
+
+
+
+
+src/features/students/
+  student.types.ts
+  student.schema.ts
+  student.queries.ts
+  student.mutations.ts
+  student.service.ts
+  components/
+    StudentCard.tsx
+    StudentForm.tsx

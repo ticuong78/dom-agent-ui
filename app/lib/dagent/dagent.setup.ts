@@ -8,8 +8,8 @@ import {
   type DiffPointSnapshot,
   type DiffViewerTypes,
 } from "@ticuong78/dom-agent";
-import { BrowserSHA256HashAdapter } from "./crypto/BrowserSHA256HashAdapter";
-import { BrowserUUIDAdapter } from "./crypto/BrowserUUIDAdapter";
+import { BrowserSHA256HashAdapter } from "../../utils/crypto/BrowserSHA256HashAdapter";
+import { BrowserUUIDAdapter } from "../../utils/crypto/BrowserUUIDAdapter";
 
 export const getDiffViewer = (type: DiffViewerTypes) => {
   switch (type) {

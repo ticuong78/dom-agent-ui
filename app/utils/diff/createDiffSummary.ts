@@ -1,5 +1,4 @@
 import type { DiffPointSnapshot, StandardDiffType } from "@ticuong78/dom-agent";
-import type { DiffSummarySnapshot } from "@ticuong78/dom-agent";
 
 export function createDiffSummary(
   diffs: DiffPointSnapshot[],

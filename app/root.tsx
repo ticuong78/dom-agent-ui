@@ -10,6 +10,8 @@ import {
 // @ts-ignore
 import type { Route } from "./+types/root";
 import "./app.css";
+import { createSupabaseBrowserClient } from "./lib/supabase/supabase.client";
+import { trackVisitSession } from "./features/visitors";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -43,7 +45,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function App() {
+export async function clientLoader({ request }: Route.ClientLoaderArgs) {
+  const supabase = createSupabaseBrowserClient();
+
+  const url = new URL(request.url);
+
+  const result = await trackVisitSession(supabase, {
+    landingPage: `${url.pathname}${url.search}`,
+  });
+
+  return result;
+}
+export default function App({ loaderData }: Route.ComponentProps) {
   return <Outlet />;
 }
 
