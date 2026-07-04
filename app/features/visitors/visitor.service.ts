@@ -6,9 +6,7 @@ import {
   createVisitSession,
   updateVisitorTotalSessions,
 } from "./visitor.mutations";
-
-const VISITOR_ID_KEY = "visitor_id";
-const VISIT_SESSION_ID_KEY = "visit_session_id";
+import { VISITOR_ID_KEY, VISIT_SESSION_ID_KEY } from "~/constant";
 
 export async function trackVisitSession(
   supabase: SupabaseClient<Database>,

@@ -1,12 +1,6 @@
-export {};
+import { StandardDiffType, ContextNodeSnapshot } from "@ticuong78/dom-agent";
 
-import {
-  StandardDiffType,
-  ContextNodeSnapshot,
-  DiffSummarySnapshot as OldDiffSummarySnapshot,
-} from "@ticuong78/dom-agent";
-
-declare global {
+declare module "@ticuong78/dom-agent" {
   type DiffPointSnapshot = {
     type: StandardDiffType;
 
@@ -20,7 +14,16 @@ declare global {
     source?: string;
   };
 
-  type DiffSummarySnapshot = OldDiffSummarySnapshot & {
+  type DiffSummarySnapshot = {
+    /** ISO 8601 date string of when the summary was generated. */
+    createdAt: string;
+    /** Optional human-readable label for this summary. */
+    label: string | undefined;
+    /** Total number of diff points in this summary. */
+    totalDiffs: number;
+    /** All serialized diff points. */
+    diffPoints: DiffPointSnapshot[];
+
     added: number;
     removed: number;
     modified: number;

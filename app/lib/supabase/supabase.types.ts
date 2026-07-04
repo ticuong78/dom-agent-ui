@@ -14,6 +14,65 @@ export type Database = {
   }
   public: {
     Tables: {
+      contacts: {
+        Row: {
+          city: string | null
+          created_at: string
+          email: string
+          id: string
+          is_subscribed: boolean
+          lifecycle_stage: Database["public"]["Enums"]["lifecycle_stage"]
+          message: string | null
+          name: string | null
+          phone: string | null
+          sent_welcomed_at: string | null
+          source: string | null
+          unsubscribed_at: string | null
+          updated_at: string
+          visitor_id: string | null
+        }
+        Insert: {
+          city?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          is_subscribed?: boolean
+          lifecycle_stage?: Database["public"]["Enums"]["lifecycle_stage"]
+          message?: string | null
+          name?: string | null
+          phone?: string | null
+          sent_welcomed_at?: string | null
+          source?: string | null
+          unsubscribed_at?: string | null
+          updated_at?: string
+          visitor_id?: string | null
+        }
+        Update: {
+          city?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          is_subscribed?: boolean
+          lifecycle_stage?: Database["public"]["Enums"]["lifecycle_stage"]
+          message?: string | null
+          name?: string | null
+          phone?: string | null
+          sent_welcomed_at?: string | null
+          source?: string | null
+          unsubscribed_at?: string | null
+          updated_at?: string
+          visitor_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contacts_visitor_id_fkey"
+            columns: ["visitor_id"]
+            isOneToOne: false
+            referencedRelation: "visitors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       event_logs: {
         Row: {
           event_type_id: string
@@ -99,43 +158,23 @@ export type Database = {
         }
         Relationships: []
       }
-      leads: {
+      product_stage_history: {
         Row: {
           created_at: string
-          email: string
           id: string
-          source: string
-          subscribed_at: string
-          updated_at: string
-          visitor_id: string | null
+          product_stage: Database["public"]["Enums"]["product_stage"]
         }
         Insert: {
           created_at?: string
-          email: string
           id?: string
-          source: string
-          subscribed_at?: string
-          updated_at?: string
-          visitor_id?: string | null
+          product_stage?: Database["public"]["Enums"]["product_stage"]
         }
         Update: {
           created_at?: string
-          email?: string
           id?: string
-          source?: string
-          subscribed_at?: string
-          updated_at?: string
-          visitor_id?: string | null
+          product_stage?: Database["public"]["Enums"]["product_stage"]
         }
-        Relationships: [
-          {
-            foreignKeyName: "leads_visitor_id_fkey"
-            columns: ["visitor_id"]
-            isOneToOne: true
-            referencedRelation: "visitors"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       visit_sessions: {
         Row: {
@@ -144,7 +183,7 @@ export type Database = {
           city: string | null
           country: string | null
           created_at: string
-          device_type: string | null
+          device_type: Database["public"]["Enums"]["device_type"] | null
           ended_at: string | null
           event_count: number
           exit_page: string | null
@@ -173,7 +212,7 @@ export type Database = {
           city?: string | null
           country?: string | null
           created_at?: string
-          device_type?: string | null
+          device_type?: Database["public"]["Enums"]["device_type"] | null
           ended_at?: string | null
           event_count?: number
           exit_page?: string | null
@@ -202,7 +241,7 @@ export type Database = {
           city?: string | null
           country?: string | null
           created_at?: string
-          device_type?: string | null
+          device_type?: Database["public"]["Enums"]["device_type"] | null
           ended_at?: string | null
           event_count?: number
           exit_page?: string | null
@@ -270,7 +309,28 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      device_type:
+        | "mobile"
+        | "tablet"
+        | "desktop"
+        | "tv"
+        | "wearable"
+        | "bot"
+        | "unknown"
+      lifecycle_stage: "subscriber" | "lead" | "trial" | "customer" | "churned"
+      product_stage:
+        | "concept"
+        | "pre_launch"
+        | "alpha"
+        | "closed_beta"
+        | "open_beta"
+        | "release_candidate"
+        | "ga"
+        | "growth"
+        | "mature"
+        | "maintenance"
+        | "deprecated"
+        | "sunset"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -397,6 +457,31 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      device_type: [
+        "mobile",
+        "tablet",
+        "desktop",
+        "tv",
+        "wearable",
+        "bot",
+        "unknown",
+      ],
+      lifecycle_stage: ["subscriber", "lead", "trial", "customer", "churned"],
+      product_stage: [
+        "concept",
+        "pre_launch",
+        "alpha",
+        "closed_beta",
+        "open_beta",
+        "release_candidate",
+        "ga",
+        "growth",
+        "mature",
+        "maintenance",
+        "deprecated",
+        "sunset",
+      ],
+    },
   },
 } as const

@@ -7,6 +7,7 @@
     "build": "react-router build",
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
+    "typegen": "corepack yarn supabase gen types --project-id hsawpducdnoahfsozpuh --schema public > app/lib/supabase/supabase.types.ts",
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {

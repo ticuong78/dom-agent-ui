@@ -6,15 +6,18 @@ import { Features } from "../components/Features";
 import { Workflows } from "../components/Workflows";
 import { Pricing } from "../components/Pricing";
 import { Footer } from "../components/Footer";
+import { createSupabaseServerClient } from "~/lib/supabase/supabase.server";
+import { getProductStage } from "~/features/product_stage/product_stage.queries";
+import { redirect } from "react-router";
 
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "tracui · Pure algorithmic DOM diff" },
-    {
-      name: "description",
-      content: "Catch DOM changes that matter, ignore the noise.",
-    },
-  ];
+export async function loader({ request }: Route.ActionArgs) {
+  const { supabase, headers } = createSupabaseServerClient(request);
+
+  const product_stage = await getProductStage(supabase);
+
+  if (product_stage.product_stage === "pre_launch") {
+    return redirect("/lookingforward!");
+  }
 }
 
 export default function Home() {

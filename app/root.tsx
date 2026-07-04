@@ -7,11 +7,8 @@ import {
   ScrollRestoration,
 } from "react-router";
 
-// @ts-ignore
 import type { Route } from "./+types/root";
 import "./app.css";
-import { createSupabaseBrowserClient } from "./lib/supabase/supabase.client";
-import { trackVisitSession } from "./features/visitors";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -45,17 +42,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export async function clientLoader({ request }: Route.ClientLoaderArgs) {
-  const supabase = createSupabaseBrowserClient();
-
-  const url = new URL(request.url);
-
-  const result = await trackVisitSession(supabase, {
-    landingPage: `${url.pathname}${url.search}`,
-  });
-
-  return result;
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Tracui · Pure algorithmic DOM diff" },
+    {
+      name: "description",
+      content: "Catch DOM changes that matter, ignore the noise.",
+    },
+  ];
 }
+
 export default function App({ loaderData }: Route.ComponentProps) {
   return <Outlet />;
 }
